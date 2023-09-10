@@ -1,17 +1,20 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
-def january(request):
-    return HttpResponse("Welcome to the Homepage of MyPage!!")
+monthly_dict={
+    "jan":"January",
+    "feb":"Febrauary",
+    "mar":"March",
+    "apr":"April",
+    "may":"May"
+}
 
-def feb(request):
-    return HttpResponse("Welcome to the Second Homepage of MyPage!!")
+def monthly_challenge_num(request, month):
+    redirect_month=list(monthly_dict.keys())[month-1]
+    return HttpResponseRedirect("/challenges/"+redirect_month)
+
 
 def monthly_challenge(request,month):
-    response=None
-    if month== "January":
-        response="January"
-    elif month=="Feb":
-        response="February"
-    else:
+    try:
+        return HttpResponse(monthly_dict[month])
+    except:
         return HttpResponseNotFound("Not supported")
-    return HttpResponse(response)
